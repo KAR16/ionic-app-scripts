@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var ionicWebpackFactoryPath = path.join(process.env.IONIC_APP_SCRIPTS_DIR, 'dist', 'webpack', 'ionic-webpack-factory.js');
 var ionicWebpackFactory = require(ionicWebpackFactoryPath);
@@ -16,6 +17,22 @@ function getPlugins() {
     return [
       // This helps ensure the builds are consistent if source hasn't changed:
       new webpack.optimize.OccurrenceOrderPlugin(),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'server',
+        // Port that will be used in `server` mode to start HTTP server.
+        analyzerPort: 8888,
+        // Path to bundle report file that will be generated in `static` mode.
+        // Relative to bundles output directory.
+        reportFilename: 'report.html',
+        // Automatically open report in default browser
+        openAnalyzer: true,
+        // If `true`, Webpack Stats JSON file will be generated in bundles output directory
+        generateStatsFile: true,
+        // Name of Webpack Stats JSON file that will be generated if `generateStatsFile` is `true`.
+        // Relative to bundles output directory.
+        statsFilename: 'stats.json',
+      })
+
 
       // Try to dedupe duplicated modules, if any:
       // Add this back in when Angular fixes the issue: https://github.com/angular/angular-cli/issues/1587
